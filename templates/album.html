@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Мій альбом{% endblock %}
+{% block content %}
+    <h2>Ваш фотоальбом</h2>
+
+    <!-- Навігація -->
+    {% if current_folder %}
+        <p><a href="{{ url_for('routes.album') }}">⬅️ Назад</a></p>
+        <h3>Вміст папки: {{ current_folder.name }}</h3>
+    {% else %}
+        <h3>Головна сторінка</h3>
+    {% endif %}
+
+    <!-- Форма для створення папки -->
+    <h3>Створити папку</h3>
+    <form action="/create_folder" method="post">
+        <input type="text" name="folder_name" placeholder="Назва папки" required>
+        <input type="hidden" name="parent_id" value="{{ current_folder.id if current_folder else '' }}">
+        <button type="submit">Створити</button>
+    </form>
+
+    <!-- Форма для завантаження фото -->
+    <h3>Завантажити фото</h3>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="hidden" name="folder_id" value="{{ current_folder.id if current_folder else '' }}">
+        <button type="submit">Завантажити</button>
+    </form>
+
+    <!-- Відображення папок -->
+    <h3>Папки</h3>
+    <ul>
+        {% for folder in folders %}
+            <li><a href="{{ url_for('routes.album', folder_id=folder.id) }}">{{ folder.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- Відображення фото -->
+    <h3>Фото</h3>
+    <ul>
+        {% for photo in photos %}
+            <li><img src="/uploads/{{ photo.filename }}" width="200"></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

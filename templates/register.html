@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Реєстрація{% endblock %}
+{% block content %}
+    <h2>Реєстрація</h2>
+    <form method="post">
+        <input type="text" name="username" placeholder="Логін" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Зареєструватися</button>
+    </form>
+{% endblock %}
